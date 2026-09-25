@@ -1,14 +1,9 @@
-# Phoenix
-
-
-
 <p align="center">
-
-&#x20; <img src="images/phoenix.png" alt="Phoenix logo" width="98">
-
+  <img src="images/phoenix.png" alt="Phoenix logo" width="50">
 </p>
 
+<h1 align="center">Phoenix</h1>
 
-
-Windows application for seeing persistence mechanisms installed on your machine.
-
+<p align="center">
+  Windows application for viewing persistence mechanisms installed on your machine.
+</p>
