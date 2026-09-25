@@ -1,10 +1,10 @@
-\# Phoenix
+# Phoenix
 
 
 
 <p align="center">
 
-&#x20; <img src="images/phoenix.png" alt="Phoenix logo" width="180">
+&#x20; <img src="images/phoenix.png" alt="Phoenix logo" width="98">
 
 </p>
 
