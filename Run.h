@@ -17,9 +17,8 @@ public:
 	Run();
 
 	void Init() override; // load count and list in memory, more fluent when utilisation, no more loading.
-	int GetCount() override;
+	void GetCount() override;
 	void GetAll() override;
-	//bool GetOnce() override; 
 
 private:
 	bool LoadValues(HKEY hRun);

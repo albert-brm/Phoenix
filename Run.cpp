@@ -8,6 +8,8 @@ Run::Run() {
 	this->countHKLM = 0;
 }
 
+
+// Loading all values from sub key register : hRun in parameters
 bool Run::LoadValues(HKEY hRun) {
 	std::wstring select = L"";
 	if (hRun == HKEY_CURRENT_USER) {
@@ -90,9 +92,9 @@ bool Run::LoadValues(HKEY hRun) {
 	return true;
 }
 
-void Run::Init() {
-	// Loading data
 
+// Loading values from HKCU and HKLM Run Keys
+void Run::Init() {
 	// HKCU
 	if (LoadValues(HKEY_CURRENT_USER)) {
 		printf("HKCU Run Key Load\n");
@@ -110,10 +112,11 @@ void Run::Init() {
 
 }
 
-int Run::GetCount() {
-	return (this->countHKCU + this->countHKLM);
+void Run::GetCount() {
+	printf("\nCount total : %d\n", (this->countHKCU+this->countHKCU));
 }
 
+// print value : 3 elements (name, type, data)
 void Run::printValue(const value& myValue) {
 	wprintf(
 		L"Name : %ls\n"
@@ -127,6 +130,7 @@ void Run::printValue(const value& myValue) {
 	}
 }
 
+// print all values in HKCU and HKLM run key
 void Run::GetAll() {
 	// Brower and print
 	printf("\nHKCU\n");
