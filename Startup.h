@@ -1,19 +1,35 @@
 #pragma once
-/*
 #include "Persistance.h"
 #include <string>
+#include <vector>
+#include "Windows.h"
+#include <ShObjIdl.h>
+
+typedef struct app { // .exe or .lnk
+	std::wstring name;
+	DWORD attribute;
+	std::wstring type;
+	std::wstring path;
+	std::wstring arguments;
+	std::wstring workingDirectory;
+};
 
 class Startup : public Persistance {
 public:
 	Startup();
-	bool Install() override;
-	bool Remove() override;
-	bool Check() override;
-	bool List() override;
+
+	void Init() override;
+	void GetCount() override;
+	void GetAll() override;
+
 private:
-	std::wstring name;
-	std::wstring payload;
+	int countUser; // list app
+	std::vector<app> myStartupAppsUser; // informations app
 
+	int countMachine; // list app
+	std::vector<app> myStartupAppsMachine; // informations app
 
+	bool LoadFilesFromPath(std::wstring pathSrc, std::wstring startupLocation);
+	bool LoadLnkInformations();
+	void printApp(struct app myApp);
 };
-*/
