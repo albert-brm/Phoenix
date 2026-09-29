@@ -115,7 +115,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Advapi32.lib;Kernel32.lib;Ole32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Advapi32.lib;Kernel32.lib;Ole32.lib;taskschd.lib;oleaut32.lib;comsuppw.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
       <EnableSegmentHeap>true</EnableSegmentHeap>
@@ -143,12 +143,14 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Run.cpp" />
     <ClCompile Include="Startup.cpp" />
+    <ClCompile Include="TaskScheduler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Persistance.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Run.h" />
     <ClInclude Include="Startup.h" />
+    <ClInclude Include="TaskScheduler.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Phoenix.rc" />

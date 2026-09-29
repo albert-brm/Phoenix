@@ -8,15 +8,15 @@ Startup::Startup() {
 
 
 bool Startup::LoadLnkInformations(std::wstring lnkPath, struct app* myPtrApp) {
-	IShellLinkW* shellLink = nullptr;
-	IPersistFile* persistFile = nullptr;
-
+	// Init COM 
 	HRESULT hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
 	if (FAILED(hr)) {
 		printf("Load LNK failed\n");
 		return false;
 	}
 
+	IShellLinkW* shellLink = nullptr;
+	// Create instance COM for ShellLink
 	hr = CoCreateInstance(
 		CLSID_ShellLink,
 		nullptr,
@@ -29,6 +29,8 @@ bool Startup::LoadLnkInformations(std::wstring lnkPath, struct app* myPtrApp) {
 		return false;
 	}
 
+	IPersistFile* persistFile = nullptr;
+	// Query for a File
 	hr = shellLink->QueryInterface(
 		IID_IPersistFile,
 		(void**)&persistFile
@@ -38,6 +40,7 @@ bool Startup::LoadLnkInformations(std::wstring lnkPath, struct app* myPtrApp) {
 		return false;
 	}
 
+	// Load this file
 	hr = persistFile->Load(lnkPath.c_str(), STGM_READ);
 	if (FAILED(hr)) {
 		printf("Load LNK failed\n");

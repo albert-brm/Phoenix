@@ -1,7 +1,8 @@
-#include "Run.h"
-#include "Startup.h"
 #include <stdio.h>
 #include <string>
+#include "Run.h"
+#include "Startup.h"
+#include "TaskScheduler.h"
 
 int wmain(int argc, wchar_t* argv[]) {
 	
@@ -14,6 +15,11 @@ int wmain(int argc, wchar_t* argv[]) {
 	persistance2.Init();
 	persistance2.GetCount();
 	persistance2.GetAll();
+	printf("\n\n");
+	TaskScheduler persistance3;
+	persistance3.Init();
+	
+	
 	
 
 	return 0;
