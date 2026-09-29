@@ -30,6 +30,6 @@ private:
 	std::vector<app> myStartupAppsMachine; // informations app
 
 	bool LoadFilesFromPath(std::wstring pathSrc, std::wstring startupLocation);
-	bool LoadLnkInformations();
+	bool LoadLnkInformations(std::wstring lnkPath, struct app* myPtrApp);
 	void printApp(struct app myApp);
 };

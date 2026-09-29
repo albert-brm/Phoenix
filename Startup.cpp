@@ -7,6 +7,74 @@ Startup::Startup() {
 }
 
 
+bool Startup::LoadLnkInformations(std::wstring lnkPath, struct app* myPtrApp) {
+	IShellLinkW* shellLink = nullptr;
+	IPersistFile* persistFile = nullptr;
+
+	HRESULT hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+	if (FAILED(hr)) {
+		printf("Load LNK failed\n");
+		return false;
+	}
+
+	hr = CoCreateInstance(
+		CLSID_ShellLink,
+		nullptr,
+		CLSCTX_INPROC_SERVER,
+		IID_IShellLinkW,
+		(void**)&shellLink
+	);
+	if (FAILED(hr)) {
+		printf("Load LNK failed\n");
+		return false;
+	}
+
+	hr = shellLink->QueryInterface(
+		IID_IPersistFile,
+		(void**)&persistFile
+	);
+	if (FAILED(hr)) {
+		printf("Load LNK failed\n");
+		return false;
+	}
+
+	hr = persistFile->Load(lnkPath.c_str(), STGM_READ);
+	if (FAILED(hr)) {
+		printf("Load LNK failed\n");
+		return false;
+	}
+
+	// Path execution
+	std::wstring myPath;
+	myPath.resize(256);
+	hr = shellLink->GetPath(myPath.data(), static_cast<int>(myPath.size()), nullptr, SLGP_RAWPATH);
+	if (SUCCEEDED(hr)) {
+		myPath.resize(wcslen(myPath.c_str()));
+		myPtrApp->path = myPath;
+	}
+
+	// Arguments
+	std::wstring myArgs;
+	myArgs.resize(256);
+	hr = shellLink->GetArguments(myArgs.data(), static_cast<int>(myArgs.size()));
+	if (SUCCEEDED(hr)) {
+		myArgs.resize(wcslen(myArgs.c_str()));
+		myPtrApp->arguments = myArgs;
+	}
+
+	// Working Directory
+	std::wstring myWorkDir;
+	myWorkDir.resize(256);
+	hr = shellLink->GetWorkingDirectory(myWorkDir.data(), static_cast<int>(myWorkDir.size()));
+	if (SUCCEEDED(hr)) {
+		myWorkDir.resize(wcslen(myWorkDir.c_str()));
+		myPtrApp->workingDirectory = myWorkDir;
+	}
+
+	return true;
+}
+
+
 // Loading name and type of all files form a path in arguments
 bool Startup::LoadFilesFromPath(std::wstring pathSrc, std::wstring startupLocation) {
 	std::wstring path;
@@ -39,6 +107,12 @@ bool Startup::LoadFilesFromPath(std::wstring pathSrc, std::wstring startupLocati
 		if (pos != std::wstring::npos) {
 			std::wstring type = fullName.substr(pos);
 			myApp.type = type;
+			// lnk informations
+			if (type == L".lnk") {
+				struct app* myPtrApp = &myApp;
+				std::wstring lnkPath = path + fullName;
+				LoadLnkInformations(lnkPath, myPtrApp);
+			}
 		}
 		// Add data
 		if (startupLocation == L"USER") {
@@ -70,7 +144,18 @@ bool Startup::LoadFilesFromPath(std::wstring pathSrc, std::wstring startupLocati
 				if (pos != std::wstring::npos) {
 					std::wstring type = fullName.substr(pos);
 					myApp.type = type;
+					// lnk informations
+					if (type == L".lnk") {
+						struct app* myPtrApp = &myApp;
+						size_t pos2 = path.rfind(L"*");
+						if (pos2 != std::wstring::npos) {
+							std::wstring dirPath = path.substr(0, pos2);
+							std::wstring lnkPath = dirPath + fullName;
+							LoadLnkInformations(lnkPath, myPtrApp);
+						}
+					}
 				}
+
 				// Add data
 				if (startupLocation == L"USER") {
 					this->myStartupAppsUser.push_back(myApp);
@@ -84,11 +169,11 @@ bool Startup::LoadFilesFromPath(std::wstring pathSrc, std::wstring startupLocati
 		}
 		else {
 			DWORD err = GetLastError();
-			printf("Error FindNextFile : %du\n", err);
 			if (err == ERROR_NO_MORE_FILES) {
 				break;
 			}
 			else {
+				printf("Error FindNextFile : %du\n", err);
 				FindClose(hSearchFile);
 				return false;
 			}
@@ -100,10 +185,6 @@ bool Startup::LoadFilesFromPath(std::wstring pathSrc, std::wstring startupLocati
 }
 
 
-bool Startup::LoadLnkInformations() {
-
-	return true;
-}
 
 
 // Loading data from Startup folder
@@ -133,6 +214,9 @@ void Startup::GetCount() {
 
 void Startup::printApp(struct app myApp) {
 	printf("Name : %ls\nAttribute : %lu\nType : %ls\n", myApp.name.c_str(), myApp.attribute, myApp.type.c_str());
+	if (myApp.type == L".lnk") {
+		printf("Path execution : %ls\nArguments : %ls\nWorking directory : %ls\n",myApp.path.c_str(),myApp.arguments.c_str(),myApp.workingDirectory.c_str());
+	}
 }
 
 void Startup::GetAll() {
