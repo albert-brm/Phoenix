@@ -4,7 +4,12 @@
 #include <vector>
 #include <Windows.h>
 
-// 3 elements store in key
+// Doc Run
+
+// We load Run key in HKCU and HKLM register.
+// For each input we load the 3 elements : name, type, data
+
+
 typedef struct value {
 	std::wstring name;
 	DWORD type;

@@ -19,6 +19,7 @@ int wmain(int argc, wchar_t* argv[]) {
 	TaskScheduler persistance3;
 	persistance3.Init();
 	persistance3.GetAll();
+	persistance3.GetCount();
 	
 	
 	
