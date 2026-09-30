@@ -2,6 +2,8 @@
 #include "Persistance.h"
 #include <vector>
 #include <string>
+#include <map>
+#include <unordered_map>
 #include "Windows.h"
 #include <taskschd.h>
 #include <comdef.h>
@@ -15,9 +17,7 @@ typedef struct task {
 };
 
 typedef struct folder {
-	std::wstring folderName;
 	std::vector<task> myTasks;
-	std::vector<folder> myFolders;
 };
 
 
@@ -30,11 +30,12 @@ public:
 	void GetAll() override;
 
 private:
-	ITaskService* initComTaskScheduler();
+	ITaskService* initCom();
+	void addFolder(std::wstring parentFolderName, struct folder folderToAdd);
 	void LoadTasks(ITaskFolder* myTask);
 	void BrowseFolderRecurs(ITaskFolderCollection* collectionRootFolder);
 
 	int count;
-	struct folder rootFolder;
+	std::map<std::wstring, struct folder> taskSchedulerFolders; // key : pathName
 
 };

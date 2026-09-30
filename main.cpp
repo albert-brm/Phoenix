@@ -18,6 +18,7 @@ int wmain(int argc, wchar_t* argv[]) {
 	printf("\n\n");
 	TaskScheduler persistance3;
 	persistance3.Init();
+	persistance3.GetAll();
 	
 	
 	

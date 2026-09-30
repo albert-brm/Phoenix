@@ -7,7 +7,7 @@ TaskScheduler::TaskScheduler() {
 
 
 
-ITaskService* TaskScheduler::initComTaskScheduler() {
+ITaskService* TaskScheduler::initCom() {
 	// Init COM
 	HRESULT hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
 	if (FAILED(hr)) {
@@ -49,24 +49,10 @@ ITaskService* TaskScheduler::initComTaskScheduler() {
 
 
 
-
 void TaskScheduler::LoadTasks(ITaskFolder* myFolder) {
-	// get folder name
-	BSTR folderName = nullptr;
-	HRESULT hr2 = myFolder->get_Name(&folderName);
-	if (FAILED(hr2)) {
-		printf("Error get name folder\n");
-		return;
-	}
-
-	// add data
-	struct folder storeFolder;
-	storeFolder.folderName = std::wstring(folderName);
-
-
 	// get collection tasks
 	IRegisteredTaskCollection* collectionTask = nullptr;
-	hr2 = myFolder->GetTasks(TASK_ENUM_HIDDEN, &collectionTask);
+	HRESULT hr2 = myFolder->GetTasks(TASK_ENUM_HIDDEN, &collectionTask);
 	if (FAILED(hr2)) {
 		printf("Error opening tasks in folder\n");
 		return;
@@ -81,6 +67,16 @@ void TaskScheduler::LoadTasks(ITaskFolder* myFolder) {
 		return;
 	}
 
+	// prepare loading data
+	BSTR folderPath = nullptr;
+	hr2 = myFolder->get_Path(&folderPath);
+	if (FAILED(hr2)) {
+		printf("Error get name folder\n");
+		return;
+	}
+	struct folder storeFolder;
+	std::vector<struct task> storeTasks;
+
 	// browse collection tasks
 	for (LONG j = 1;j <= countTasks;j++) {
 		IRegisteredTask* myTask = nullptr;
@@ -93,6 +89,7 @@ void TaskScheduler::LoadTasks(ITaskFolder* myFolder) {
 		}
 
 		// Loading data of the task
+		struct task storeTask;
 		// name
 		BSTR name = nullptr;
 		hr2 = myTask->get_Name(&name);
@@ -101,6 +98,7 @@ void TaskScheduler::LoadTasks(ITaskFolder* myFolder) {
 			myTask->Release();
 			continue;
 		}
+		storeTask.name = static_cast<std::wstring>(name);
 		// path
 		BSTR path = nullptr;
 		hr2 = myTask->get_Path(&path);
@@ -110,6 +108,7 @@ void TaskScheduler::LoadTasks(ITaskFolder* myFolder) {
 			myTask->Release();
 			continue;
 		}
+		storeTask.path = static_cast<std::wstring>(path);
 		// enabled
 		VARIANT_BOOL enabled;
 		hr2 = myTask->get_Enabled(&enabled);
@@ -120,6 +119,7 @@ void TaskScheduler::LoadTasks(ITaskFolder* myFolder) {
 			myTask->Release();
 			continue;
 		}
+		storeTask.enabled = static_cast<bool>(enabled);
 		// state
 		TASK_STATE state;
 		hr2 = myTask->get_State(&state);
@@ -130,6 +130,7 @@ void TaskScheduler::LoadTasks(ITaskFolder* myFolder) {
 			myTask->Release();
 			continue;
 		}
+		storeTask.state = static_cast<int>(state);
 		// definition
 		ITaskDefinition* taskDefinition = nullptr;
 		hr2 = myTask->get_Definition(&taskDefinition);
@@ -151,13 +152,8 @@ void TaskScheduler::LoadTasks(ITaskFolder* myFolder) {
 		TODO
 		*/
 
-
-		std::wcout
-			<< L"Name : " << name
-			<< L" Task Path : " << path
-			<< L" Enabled : " << enabled
-			<< L" State : " << state
-			<< L"\n";
+		// add task in vector of tasks
+		storeTasks.push_back(storeTask);
 
 		SysFreeString(name);
 		SysFreeString(path);
@@ -165,6 +161,11 @@ void TaskScheduler::LoadTasks(ITaskFolder* myFolder) {
 		myTask->Release();
 	}
 	collectionTask->Release();
+	// add vector tasks in folder
+	storeFolder.myTasks = storeTasks;
+
+	// add to the data store
+	this->taskSchedulerFolders.insert_or_assign(folderPath, storeFolder); // add tasks for this folder
 }
 
 
@@ -184,7 +185,7 @@ void TaskScheduler::BrowseFolderRecurs(ITaskFolderCollection* collectionRootFold
 		return;
 	}
 
-	// browse collection folders
+	// browse collection folders. Recursive until we finish 1 folder then past to the next one.
 	for (LONG i = 1;i <= countRootFolders;i++) {
 
 		// get folder
@@ -210,9 +211,13 @@ void TaskScheduler::BrowseFolderRecurs(ITaskFolderCollection* collectionRootFold
 	}
 }
 
+
+
+
+
 void TaskScheduler::Init() {
 
-	ITaskService* taskService = initComTaskScheduler();
+	ITaskService* taskService = initCom();
 	if (taskService == NULL) {
 		printf("Error initialization COM TAskScheduler\n");
 		return;
@@ -226,7 +231,7 @@ void TaskScheduler::Init() {
 		taskService->Release();
 		return;
 	}
-	LoadTasks(rootFolder);
+	LoadTasks(rootFolder); // if rootFolder contains tasks
 
 	// get root collection folder
 	ITaskFolderCollection* collectionRootFolder = nullptr;
@@ -256,7 +261,18 @@ void TaskScheduler::GetCount() {
 }
 
 
-void TaskScheduler::GetAll() {
 
+void printTask(struct task myTask) {
+	std::wcout << L"Name : " << myTask.name << L" Path executable : " << myTask.path << L" Enabled : " << myTask.enabled << L" State : " << myTask.state << std::endl;
+}
+
+
+void TaskScheduler::GetAll() {
+	for (auto& element : this->taskSchedulerFolders) {
+		std::wcout << L"Key : " << element.first.c_str() << std::endl;
+		for (int i = 0;i < element.second.myTasks.size();i++) {
+			printTask(element.second.myTasks[i]);
+		}
+	}
 
 }
