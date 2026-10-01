@@ -3,6 +3,7 @@
 #include "Run.h"
 #include "Startup.h"
 #include "TaskScheduler.h"
+#include "Service.h"
 
 int wmain(int argc, wchar_t* argv[]) {
 	
@@ -16,12 +17,17 @@ int wmain(int argc, wchar_t* argv[]) {
 	persistance2.GetCount();
 	persistance2.GetAll();
 	printf("\n\n");
+	/*
 	TaskScheduler persistance3;
 	persistance3.Init();
 	persistance3.GetAll();
 	persistance3.GetCount();
-	
-	
+	*/
+	printf("\n\n");
+	Service persistance4;
+	persistance4.Init();
+	persistance4.GetAll();
+	persistance4.GetCount();
 	
 
 	return 0;

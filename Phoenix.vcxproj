@@ -142,6 +142,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Run.cpp" />
+    <ClCompile Include="Service.cpp" />
     <ClCompile Include="Startup.cpp" />
     <ClCompile Include="TaskScheduler.cpp" />
   </ItemGroup>
@@ -149,6 +150,7 @@
     <ClInclude Include="Persistance.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Run.h" />
+    <ClInclude Include="Service.h" />
     <ClInclude Include="Startup.h" />
     <ClInclude Include="TaskScheduler.h" />
   </ItemGroup>
