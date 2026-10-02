@@ -2,6 +2,7 @@
 #include "Persistance.h"
 #include <string>
 #include <vector>
+#include <iostream>
 #include "Windows.h"
 #include <ShObjIdl.h>
 

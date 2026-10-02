@@ -1,4 +1,5 @@
 #include "Run.h"
+#include <iostream>
 #include <Windows.h>
 
 Run::Run() {
@@ -113,7 +114,9 @@ void Run::Init() {
 }
 
 void Run::GetCount() {
-	printf("\nCount total : %d\n", (this->countHKCU+this->countHKCU));
+	std::wcout 
+		<< L"Run Key HKCU : " << this->countHKCU << std::endl
+		<< L"Run Key HKLM : " << this->countHKLM << std::endl;
 }
 
 // print value : 3 elements (name, type, data)

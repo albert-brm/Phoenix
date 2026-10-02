@@ -523,7 +523,7 @@ void TaskScheduler::Init() {
 
 
 void TaskScheduler::GetCount() {
-	std::wcout << L"\nThere are " << this->count << L" tasks in the Task Scheduler\n" << std::endl;
+	std::wcout << L"TaskScheduler :" << this->count << std::endl;
 }
 
 void printAction(const struct action& myAction) {

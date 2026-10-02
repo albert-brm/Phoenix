@@ -201,7 +201,7 @@ void Startup::Init() {
 	}
 	// Computer
 	if (LoadFilesFromPath(L"%ProgramData%\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\*", L"MACHINE")) {
-		printf("Load Startup Machine\n");
+		printf("Load Startup Machine\n\n");
 	}
 	else {
 		printf("Load Startup Machine failed\n");
@@ -212,7 +212,9 @@ void Startup::Init() {
 
 
 void Startup::GetCount() {
-	printf("\nTotal Application : %d\n", (this->countUser+this->countMachine));
+	std::wcout 
+		<< L"Startup User : " << this->countUser << std::endl
+		<< L"Startup Machine : " << this->countMachine << std::endl;
 }
 
 void Startup::printApp(struct app myApp) {

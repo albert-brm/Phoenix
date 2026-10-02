@@ -180,8 +180,8 @@ void Service::Init() {
 
 void Service::GetCount() {
 	std::wcout
-		<< L"\nServices user : " << this->countUserServices << std::endl
-		<< L"Services kernel : " << this->countKernelServices << std::endl;
+		<< L"Services User : " << this->countUserServices << std::endl
+		<< L"Services Kernel : " << this->countKernelServices << std::endl;
 }
 
 
