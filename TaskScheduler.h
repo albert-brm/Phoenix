@@ -63,6 +63,8 @@ public:
 	void GetCount() override;
 	void GetAll() override;
 
+	std::wstring getCount();
+
 private:
 	ITaskService* initCom();
 	void LoadBaseTask(IRegisteredTask* myTask, struct task& storeTask);

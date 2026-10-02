@@ -25,15 +25,20 @@ public:
 	void GetCount() override;
 	void GetAll() override;
 
+	std::wstring getCountHKCU();
+	std::wstring getCountHKLM();
+	std::wstring getName();
+	std::wstring getType();
+	std::wstring getData();
+
 private:
 	bool LoadValues(HKEY hRun);
 	void printValue(const value& myValue);
 
-	HKEY hRunHKCU; // keep handle pour remove mechanisme later.
-	int countHKCU; // nb of HKCU
+	int countHKCU; // nb of HKCU Run Key elements
 	std::vector<struct value> myValuesHKCU; // data store in memory
-
+	int countHKLM;
+	std::vector<struct value> myValuesHKLM;
+	HKEY hRunHKCU;
 	HKEY hRunHKLM;
-	int countHKLM; // nb of HKLM
-	std::vector<struct value> myValuesHKLM; // data store in memory
 };

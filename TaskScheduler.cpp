@@ -603,3 +603,10 @@ void TaskScheduler::GetAll() {
 		}
 	}
 }
+
+
+
+
+std::wstring TaskScheduler::getCount() {
+	return std::to_wstring(this->count);
+}

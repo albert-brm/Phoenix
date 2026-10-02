@@ -113,7 +113,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>Advapi32.lib;Kernel32.lib;Ole32.lib;taskschd.lib;oleaut32.lib;comsuppw.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
@@ -140,13 +140,16 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Graphic.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mainUI.cpp" />
     <ClCompile Include="Run.cpp" />
     <ClCompile Include="Service.cpp" />
     <ClCompile Include="Startup.cpp" />
     <ClCompile Include="TaskScheduler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Graphic.h" />
     <ClInclude Include="Persistance.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Run.h" />

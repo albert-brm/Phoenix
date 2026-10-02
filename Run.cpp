@@ -146,3 +146,10 @@ void Run::GetAll() {
 }
 
 
+// Getter printing data UI
+std::wstring Run::getCountHKCU() {
+	return std::to_wstring(this->countHKCU);
+}
+std::wstring Run::getCountHKLM() {
+	return std::to_wstring(this->countHKLM);
+}

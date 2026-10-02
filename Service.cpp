@@ -206,3 +206,13 @@ void Service::GetAll() {
 		printService(element.second);
 	}
 }
+
+
+
+std::wstring Service::getCountUser() {
+	return std::to_wstring(this->countUserServices);
+}
+
+std::wstring Service::getCountKernel() {
+	return std::to_wstring(this->countKernelServices);
+}

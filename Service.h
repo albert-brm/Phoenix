@@ -18,6 +18,9 @@ public:
 	void Init() override;
 	void GetCount() override;
 	void GetAll() override;
+
+	std::wstring getCountUser();
+	std::wstring getCountKernel();
 private:
 	void LoadServices(DWORD serviceType);
 	void printService(struct service myService);

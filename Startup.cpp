@@ -234,3 +234,13 @@ void Startup::GetAll() {
 		printApp(this->myStartupAppsMachine[i]);
 	}
 }
+
+
+std::wstring Startup::getCountUser() {
+	return std::to_wstring(this->countUser);
+}
+
+
+std::wstring Startup::getCountMachine() {
+	return std::to_wstring(this->countMachine);
+}

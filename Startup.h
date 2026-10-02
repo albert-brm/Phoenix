@@ -27,6 +27,9 @@ public:
 	void GetCount() override;
 	void GetAll() override;
 
+	std::wstring getCountUser();
+	std::wstring getCountMachine();
+
 private:
 	int countUser; // list app
 	std::vector<app> myStartupAppsUser; // informations app

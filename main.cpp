@@ -5,6 +5,8 @@
 #include "TaskScheduler.h"
 #include "Service.h"
 
+
+// MAIN CLI APPLICATION
 int wmain(int argc, wchar_t* argv[]) {
 	
 	Run persistance;
